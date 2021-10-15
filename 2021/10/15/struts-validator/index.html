@@ -6,23 +6,23 @@
     
 
     
-    <title>My First Article | Hexo</title>
+    <title>struts validator | Hexo</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="keywords" content="praise God" />
+    <meta name="keywords" content="struts JavaEE" />
     
-    <meta name="description" content="Today is just fine for me. I create my hexo and write my first article. God bless me.PS: changed!">
+    <meta name="description" content="validate()方法validate是父类ActionSupport的一个方法，需要重写实现它。每个Action类执行时默认调用validate方法，检查输入的信息是否有误，若错误就要调用addFieldError，把提示信息传入。 validateXxx()方法一个Action类可以有多个validate，命名格式为：validate+ 业务方法名(首字母大写) 这样就可以自动匹配业务对应的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="My First Article">
-<meta property="og:url" content="http://example.com/2021/10/10/My%20First%20Article/index.html">
+<meta property="og:title" content="struts validator">
+<meta property="og:url" content="http://example.com/2021/10/15/struts-validator/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Today is just fine for me. I create my hexo and write my first article. God bless me.PS: changed!">
+<meta property="og:description" content="validate()方法validate是父类ActionSupport的一个方法，需要重写实现它。每个Action类执行时默认调用validate方法，检查输入的信息是否有误，若错误就要调用addFieldError，把提示信息传入。 validateXxx()方法一个Action类可以有多个validate，命名格式为：validate+ 业务方法名(首字母大写) 这样就可以自动匹配业务对应的">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-10-10T11:28:09.000Z">
-<meta property="article:modified_time" content="2021-10-12T00:01:44.993Z">
+<meta property="article:published_time" content="2021-10-15T06:41:40.000Z">
+<meta property="article:modified_time" content="2021-10-15T10:23:15.592Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="praise God">
+<meta property="article:tag" content="struts JavaEE">
 <meta name="twitter:card" content="summary">
     
 
@@ -155,14 +155,14 @@
 </div>
 
                         <div class="main-body-content">
-                            <article id="post-My First Article" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-struts-validator" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        My First Article
+        struts validator
         </h1>
     
 
@@ -173,16 +173,16 @@
                 
   <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2021/10/10/My%20First%20Article/" class="article-date">
-       <time datetime="2021-10-10T11:28:09.000Z" itemprop="datePublished">2021-10-10</time>
+    <a href="/2021/10/15/struts-validator/" class="article-date">
+       <time datetime="2021-10-15T06:41:40.000Z" itemprop="datePublished">2021-10-15</time>
     </a>
   </div>
 
 
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
-  <a href="/2021/10/10/My%20First%20Article/" class="article-date">
-     <time datetime="2021-10-12T00:01:44.993Z" itemprop="dateModified">2021-10-12</time>
+  <a href="/2021/10/15/struts-validator/" class="article-date">
+     <time datetime="2021-10-15T10:23:15.592Z" itemprop="dateModified">2021-10-15</time>
   </a>
 </div>
 
@@ -192,7 +192,7 @@
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link-link" href="/tags/praise-God/" rel="tag">praise God</a>
+        <a class="tag-link-link" href="/tags/struts-JavaEE/" rel="tag">struts JavaEE</a>
     </div>
 
                 
@@ -209,7 +209,18 @@
 
             
 
-            <p>Today is just fine for me. I create my hexo and write my first article. God bless me.<br>PS: changed!</p>
+            <h3 id="validate-方法"><a href="#validate-方法" class="headerlink" title="validate()方法"></a>validate()方法</h3><p>validate是父类ActionSupport的一个方法，需要重写实现它。<br>每个Action类执行时默认调用validate方法，检查输入的信息是否有误，若错误就要调用addFieldError，把提示信息传入。</p>
+<h3 id="validateXxx-方法"><a href="#validateXxx-方法" class="headerlink" title="validateXxx()方法"></a>validateXxx()方法</h3><p>一个Action类可以有多个validate，命名格式为：<strong>validate+ 业务方法名(首字母大写)</strong> <br><br>这样就可以自动匹配业务对应的处理逻辑</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//UserAction的login业务的校验</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validateLogin</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    String account = loginUser.getAccount();</span><br><span class="line">    String pwd = loginUser.getPassword();</span><br><span class="line">    <span class="keyword">if</span> (account == <span class="keyword">null</span> || account.equals(<span class="string">&quot;&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.addFieldError(<span class="string">&quot;loginUser.account&quot;</span>,<span class="keyword">this</span>.getText(<span class="string">&quot;login.account.null&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (pwd == <span class="keyword">null</span> || pwd.equals(<span class="string">&quot;&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.addFieldError(<span class="string">&quot;loginUser.password&quot;</span>,<span class="keyword">this</span>.getText(<span class="string">&quot;login.password.null&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//UserAction处理login业务 </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        UserService userServ = <span class="keyword">new</span> UserService();</span><br><span class="line">        <span class="keyword">if</span> (userServ.login(loginUser))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>.addActionMessage(<span class="keyword">this</span>.getText(<span class="string">&quot;login.success&quot;</span>));</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.addActionError(<span class="keyword">this</span>.getText(<span class="string">&quot;login.error&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;fail&quot;</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//来自validate</span></span><br><span class="line">&lt;s:fielderror&gt;</span><br><span class="line">    &lt;s:param&gt;loginUser.account&lt;/s:param&gt;</span><br><span class="line">    &lt;s:param&gt;loginUser.password&lt;/s:param&gt;</span><br><span class="line">&lt;/s:fielderror&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//来自login</span></span><br><span class="line">&lt;s:actionerror&gt;&lt;/s:actionerror&gt;</span><br><span class="line"></span><br><span class="line">&lt;s:form action=<span class="string">&quot;login&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">    &lt;s:textfield name=<span class="string">&quot;loginUser.account&quot;</span> label=<span class="string">&quot;请输入用户名&quot;</span>&gt;&lt;/s:textfield&gt;</span><br><span class="line">    &lt;s:password name=<span class="string">&quot;loginUser.password&quot;</span> label=<span class="string">&quot;请输入密码&quot;</span>&gt;&lt;/s:password&gt;</span><br><span class="line">    &lt;s:submit value=<span class="string">&quot;登陆&quot;</span> method=<span class="string">&quot;login&quot;</span>&gt;&lt;/s:submit&gt;</span><br><span class="line">&lt;/s:form&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ActionError与FieldError的区别"><a href="#ActionError与FieldError的区别" class="headerlink" title="ActionError与FieldError的区别"></a>ActionError与FieldError的区别</h4><ul>
+<li>addActionError (String anErrorMessage) 在Action类的login方法里使用，添加一个Action级别的错误消息到Action。<br>在jsp里，显示它的标签是&lt;s:actionerror/&gt;，显示全部的 Action级别的错误消息,可以加CSS代码。<br></li>
+<li>addFieldError (String  fieldName, String  errorMessage)往往在Action类里的validate里使用，因为是给一个字段(属性)添加错误消息。<br>在jsp里使用&lt;s:fielderror/&gt;显示错误信息。</li>
+</ul>
 
         </div>
         <footer class="article-footer">
@@ -217,7 +228,7 @@
 
 
 
-    <a data-url="http://example.com/2021/10/10/My%20First%20Article/" data-id="ckusa7arr0001ncs47gne6du5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://example.com/2021/10/15/struts-validator/" data-id="ckusa7as1000bncs4g9sw3h32" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -287,17 +298,17 @@
             "@type": "Person",
             "name": "John Doe"
         },
-        "headline": "My First Article",
+        "headline": "struts validator",
         "image": "http://example.com",
-        "keywords": "praise God",
+        "keywords": "struts JavaEE",
         "genre": "",
-        "datePublished": "2021-10-10",
-        "dateCreated": "2021-10-10",
-        "dateModified": "2021-10-12",
-        "url": "http://example.com/2021/10/10/My First Article/",
-        "description": "Today is just fine for me. I create my hexo and write my first article. God bless me.PS: changed!
-",
-        "wordCount": 19
+        "datePublished": "2021-10-15",
+        "dateCreated": "2021-10-15",
+        "dateModified": "2021-10-15",
+        "url": "http://example.com/2021/10/15/struts-validator/",
+        "description": "validate()方法validate是父类ActionSupport的一个方法，需要重写实现它。每个Action类执行时默认调用validate方法，检查输入的信息是否有误，若错误就要调用addFieldError，把提示信息传入。
+validateXxx()方法一个Action类可以有多个validate，命名格式为：validate+ 业务方法名(首字母大写) 这样就可以自动匹配业务对应的",
+        "wordCount": 358
     }
 </script>
 
@@ -378,20 +389,20 @@
         
 <nav id="article-nav">
     
-        <a href="/2021/10/11/ielts-2021-10-11/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2021/10/15/how-to-load-properties-in-Maven-project/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">newer</strong>
         <p class="article-nav-title">
         
-            ielts-2021-10-11
+            how to load properties in Maven project
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
     
-        <a href="/2021/10/10/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2021/10/14/ielts-2021-10-14/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">Hello World</p>
+        <p class="article-nav-title">ielts-2021-10-14</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -601,7 +612,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'http://example.com/2021/10/10/My%20First%20Article/';
+    var disqus_url = 'http://example.com/2021/10/15/struts-validator/';
     
     (function() {
     var dsq = document.createElement('script');
