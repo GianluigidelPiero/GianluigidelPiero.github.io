@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Representation Learning | Hexo</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="GNN" />
+    
+    <meta name="description" content="概述特征工程与表示学习特征工程：依靠专家提取显式特征，工程量巨大，特征选取的好坏将直接决定数据表示的质量，从而影响后续任务的性能。 表示学习：采用模型自动学习数据的隐式特征，数据表示与后续任务往往是联合训练，不依赖专家经验，但需要较大的训练数据集。 概率图模型马尔可夫模型受限玻尔兹曼机自编码器传统自编码器不是用标签进行监督，而是以输入数据作为参考，是一种无监督的学习模型，用于数据降维和特征提取。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Representation Learning">
+<meta property="og:url" content="http://example.com/2021/10/27/Representation-Learning/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述特征工程与表示学习特征工程：依靠专家提取显式特征，工程量巨大，特征选取的好坏将直接决定数据表示的质量，从而影响后续任务的性能。 表示学习：采用模型自动学习数据的隐式特征，数据表示与后续任务往往是联合训练，不依赖专家经验，但需要较大的训练数据集。 概率图模型马尔可夫模型受限玻尔兹曼机自编码器传统自编码器不是用标签进行监督，而是以输入数据作为参考，是一种无监督的学习模型，用于数据降维和特征提取。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2021-10-27-08-33-29.png">
+<meta property="article:published_time" content="2021-10-26T23:44:24.000Z">
+<meta property="article:modified_time" content="2021-10-28T04:47:33.307Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="GNN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2021-10-27-08-33-29.png">
+    
+
+    
+        <link rel="alternate" href="/" title="Hexo" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                    
+                                
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">About</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    uncategorized
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-Representation-Learning" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Representation Learning
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2021/10/27/Representation-Learning/" class="article-date">
+       <time datetime="2021-10-26T23:44:24.000Z" itemprop="datePublished">2021-10-27</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2021/10/27/Representation-Learning/" class="article-date">
+     <time datetime="2021-10-28T04:47:33.307Z" itemprop="dateModified">2021-10-28</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/GNN/" rel="tag">GNN</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h4 id="特征工程与表示学习"><a href="#特征工程与表示学习" class="headerlink" title="特征工程与表示学习"></a>特征工程与表示学习</h4><p>特征工程：依靠专家提取显式特征，工程量巨大，特征选取的好坏将直接决定数据表示的质量，从而影响后续任务的性能。</p>
+<p>表示学习：采用模型自动学习数据的隐式特征，数据表示与后续任务往往是联合训练，不依赖专家经验，但需要较大的训练数据集。</p>
+<h1 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h1><h3 id="马尔可夫模型"><a href="#马尔可夫模型" class="headerlink" title="马尔可夫模型"></a>马尔可夫模型</h3><h3 id="受限玻尔兹曼机"><a href="#受限玻尔兹曼机" class="headerlink" title="受限玻尔兹曼机"></a>受限玻尔兹曼机</h3><h1 id="自编码器"><a href="#自编码器" class="headerlink" title="自编码器"></a>自编码器</h1><h2 id="传统自编码器"><a href="#传统自编码器" class="headerlink" title="传统自编码器"></a>传统自编码器</h2><p>不是用标签进行监督，而是以输入数据作为参考，是一种无监督的学习模型，用于数据降维和特征提取。</p>
+<p>将输出映射到某个特征空间，再从特征空间映射回输入空间进行重构。</p>
+<p>由解码器和编码器组成，解码器用于从输入数据中提取特征，解码器基于提取的特征重构出输出数据，训练完成后，用编码器进行特征提取。</p>
+<p>最简单的自编码器是只有一个隐藏层的全连接网络。输入是x，input和hidden之间的是编码器，得到特征h；将h映射回输入空间，hidden和output之间的是解码器，得到重构的x。</p>
+<p>这个过程中，不需要label，通过最小化输入和输出之间的重构误差进行训练。因为不再需要label，损失函数发生了一点变化（不再是output和label作差，而是output和input作差）。还是利用反向传播和计算梯度，不断优化w和b。</p>
+<p>一般来说，自编码器比这复杂的多，编码器用f表示，解码器用g表示（对应Introduction to GNN 的内容）。</p>
+<p><img src="/images/2021-10-27-08-33-29.png"></p>
+<h3 id="欠完备自编码器"><a href="#欠完备自编码器" class="headerlink" title="欠完备自编码器"></a>欠完备自编码器</h3><p>限定h比x的维度要小，得到数据中一些有用的特征。</p>
+<h3 id="过完备的自编码器"><a href="#过完备的自编码器" class="headerlink" title="过完备的自编码器"></a>过完备的自编码器</h3><p>取消上述的长度限制。假如不加任何限制，可能不会得到任何有用的信息，仅仅是将输入复制到输出。原因在于我们赋予f和g过于强大的功能，会直接将输入拷贝到输出，从而无法得到有价值的特征。所以需要加入正则化的约束。</p>
+<h4 id="1-去噪自编码器"><a href="#1-去噪自编码器" class="headerlink" title="1. 去噪自编码器"></a>1. 去噪自编码器</h4><p>在原始输入的基础上加入噪声，解码器被迫需要重构出不加噪声的原始输入x，从而使解码器学习到更加复杂的变换。</p>
+<p>具体做法是，随即将x的一部分置为0，然后作为编码器的输入。</p>
+<h4 id="2-稀疏自编码器"><a href="#2-稀疏自编码器" class="headerlink" title="2. 稀疏自编码器"></a>2. 稀疏自编码器</h4><p>在损失函数上加入正则项。</p>
+<p>稀疏性解释：假设神经元的激活函数是sigmoid函数，如果当神经元的输出接近于1的时候我们认为它被激活，而输出接近于0的时候认为它被抑制，那么使得神经元大部分的时间都是被抑制的限制则被称作稀疏性限制。如果你使用tanh作为激活函数的话，当神经元输出为-1的时候，我们认为神经元是被抑制的。</p>
+<p>稀疏自编码器的目的就是通过限制模型的活跃度来约束模型的，尽可能使大多数神经元处于不活跃状态。</p>
+<p>加入稀疏正则项用于惩罚。ρ是超参数，表示期望的活跃度，通常是接近0的值。对偏离ρ较大的神经元进行惩罚。</p>
+<p>将下面的式子定义为sparse</p>
+<p><img src="/images/2021-10-27-09-18-29.png"></p>
+<p>则损失函数修正为：在原式的基础上+λ*sparse。λ是调节重构项和稀疏正则项的权重。</p>
+<h2 id="变分自编码器-VAE"><a href="#变分自编码器-VAE" class="headerlink" title="变分自编码器(VAE)"></a>变分自编码器(VAE)</h2><h1 id="Word2vec"><a href="#Word2vec" class="headerlink" title="Word2vec"></a>Word2vec</h1><p>使用独热向量编码、词袋模型等，会出现维度过高和稀疏性等问题。Word2vec模型将词嵌入一个向量空间中，用一个低维的向量来表达每一个词，语义相关的词距离更近。</p>
+<h2 id="Skip-gram"><a href="#Skip-gram" class="headerlink" title="Skip-gram"></a>Skip-gram</h2><p>给定一个中心词，去预测它的上下文。</p>
+<p>(x,y)中，x代表原始的输入，用独热向量表示，y是x的上下文，可以是一个词也可以是多个词。</p>
+<p>词向量的维度（与隐含层节点数一致）一般情况下要远远小于词语总数 V 的大小，所以 Word2vec 本质上是一种降维操作，把词语从 one-hot encoder 形式的表示降维到 Word2vec 形式的表示。</p>
+<p>y是一个词：<br><img src="/images/2021-10-28-12-42-36.png"></p>
+<p>y是多个词：<br><img src="/images/2021-10-28-12-38-57.png"></p>
+<h2 id="CBOW"><a href="#CBOW" class="headerlink" title="CBOW"></a>CBOW</h2><p>给定上下文，去预测中心词。是Skip-gram的相反过程。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://example.com/2021/10/27/Representation-Learning/" data-id="ckvwgv5co0003sss4fkyx3otx" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "John Doe"
+        },
+        "headline": "Representation Learning",
+        "image": "http://example.com/images/2021-10-27-08-33-29.png",
+        "keywords": "GNN",
+        "genre": "",
+        "datePublished": "2021-10-27",
+        "dateCreated": "2021-10-27",
+        "dateModified": "2021-10-28",
+        "url": "http://example.com/2021/10/27/Representation-Learning/",
+        "description": "概述特征工程与表示学习特征工程：依靠专家提取显式特征，工程量巨大，特征选取的好坏将直接决定数据表示的质量，从而影响后续任务的性能。
+表示学习：采用模型自动学习数据的隐式特征，数据表示与后续任务往往是联合训练，不依赖专家经验，但需要较大的训练数据集。
+概率图模型马尔可夫模型受限玻尔兹曼机自编码器传统自编码器不是用标签进行监督，而是以输入数据作为参考，是一种无监督的学习模型，用于数据降维和特征提取。
+",
+        "wordCount": 81
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ppoffice/hexo-theme-hueman" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2021/10/28/education/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            education
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2021/10/26/dailylife/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">dailylife</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/11/11/ielts-2021-11-11/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/11/11/ielts-2021-11-11/" class="title">ielts-2021-11-11</a></p>
+                            <p class="item-date"><time datetime="2021-11-11T03:54:26.000Z" itemprop="datePublished">2021-11-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/11/10/ielts-2021-11-10/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/11/10/ielts-2021-11-10/" class="title">ielts-2021-11-10</a></p>
+                            <p class="item-date"><time datetime="2021-11-09T22:42:08.000Z" itemprop="datePublished">2021-11-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/11/09/ielts-2021-11-9/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/11/09/ielts-2021-11-9/" class="title">ielts-2021-11-9</a></p>
+                            <p class="item-date"><time datetime="2021-11-09T12:37:32.000Z" itemprop="datePublished">2021-11-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/11/07/Listening-Words/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/11/07/Listening-Words/" class="title">Listening Words</a></p>
+                            <p class="item-date"><time datetime="2021-11-07T04:22:45.000Z" itemprop="datePublished">2021-11-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/11/07/ielts-2021-11-7/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/11/07/ielts-2021-11-7/" class="title">ielts-2021-11-7</a></p>
+                            <p class="item-date"><time datetime="2021-11-07T01:43:17.000Z" itemprop="datePublished">2021-11-07</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">26</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compilers-Principles/" rel="tag">Compilers Principles</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GNN/" rel="tag">GNN</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts/" rel="tag">ielts</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/praise-God/" rel="tag">praise God</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts-JavaEE/" rel="tag">struts JavaEE</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Compilers-Principles/" style="font-size: 10px;">Compilers Principles</a> <a href="/tags/GNN/" style="font-size: 16.67px;">GNN</a> <a href="/tags/ielts/" style="font-size: 20px;">ielts</a> <a href="/tags/praise-God/" style="font-size: 10px;">praise God</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts-JavaEE/" style="font-size: 13.33px;">struts JavaEE</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2021 John Doe</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'http://example.com/2021/10/27/Representation-Learning/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
