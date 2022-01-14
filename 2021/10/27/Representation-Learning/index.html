@@ -211,33 +211,33 @@
 
             
 
-            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h4 id="特征工程与表示学习"><a href="#特征工程与表示学习" class="headerlink" title="特征工程与表示学习"></a>特征工程与表示学习</h4><p>特征工程：依靠专家提取显式特征，工程量巨大，特征选取的好坏将直接决定数据表示的质量，从而影响后续任务的性能。</p>
+            <h1><span id="概述">概述</span></h1><h4><span id="特征工程与表示学习">特征工程与表示学习</span></h4><p>特征工程：依靠专家提取显式特征，工程量巨大，特征选取的好坏将直接决定数据表示的质量，从而影响后续任务的性能。</p>
 <p>表示学习：采用模型自动学习数据的隐式特征，数据表示与后续任务往往是联合训练，不依赖专家经验，但需要较大的训练数据集。</p>
-<h1 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h1><h3 id="马尔可夫模型"><a href="#马尔可夫模型" class="headerlink" title="马尔可夫模型"></a>马尔可夫模型</h3><h3 id="受限玻尔兹曼机"><a href="#受限玻尔兹曼机" class="headerlink" title="受限玻尔兹曼机"></a>受限玻尔兹曼机</h3><h1 id="自编码器"><a href="#自编码器" class="headerlink" title="自编码器"></a>自编码器</h1><h2 id="传统自编码器"><a href="#传统自编码器" class="headerlink" title="传统自编码器"></a>传统自编码器</h2><p>不是用标签进行监督，而是以输入数据作为参考，是一种无监督的学习模型，用于数据降维和特征提取。</p>
+<h1><span id="概率图模型">概率图模型</span></h1><h3><span id="马尔可夫模型">马尔可夫模型</span></h3><h3><span id="受限玻尔兹曼机">受限玻尔兹曼机</span></h3><h1><span id="自编码器">自编码器</span></h1><h2><span id="传统自编码器">传统自编码器</span></h2><p>不是用标签进行监督，而是以输入数据作为参考，是一种无监督的学习模型，用于数据降维和特征提取。</p>
 <p>将输出映射到某个特征空间，再从特征空间映射回输入空间进行重构。</p>
 <p>由解码器和编码器组成，解码器用于从输入数据中提取特征，解码器基于提取的特征重构出输出数据，训练完成后，用编码器进行特征提取。</p>
 <p>最简单的自编码器是只有一个隐藏层的全连接网络。输入是x，input和hidden之间的是编码器，得到特征h；将h映射回输入空间，hidden和output之间的是解码器，得到重构的x。</p>
 <p>这个过程中，不需要label，通过最小化输入和输出之间的重构误差进行训练。因为不再需要label，损失函数发生了一点变化（不再是output和label作差，而是output和input作差）。还是利用反向传播和计算梯度，不断优化w和b。</p>
 <p>一般来说，自编码器比这复杂的多，编码器用f表示，解码器用g表示（对应Introduction to GNN 的内容）。</p>
 <p><img src="/images/2021-10-27-08-33-29.png"></p>
-<h3 id="欠完备自编码器"><a href="#欠完备自编码器" class="headerlink" title="欠完备自编码器"></a>欠完备自编码器</h3><p>限定h比x的维度要小，得到数据中一些有用的特征。</p>
-<h3 id="过完备的自编码器"><a href="#过完备的自编码器" class="headerlink" title="过完备的自编码器"></a>过完备的自编码器</h3><p>取消上述的长度限制。假如不加任何限制，可能不会得到任何有用的信息，仅仅是将输入复制到输出。原因在于我们赋予f和g过于强大的功能，会直接将输入拷贝到输出，从而无法得到有价值的特征。所以需要加入正则化的约束。</p>
-<h4 id="1-去噪自编码器"><a href="#1-去噪自编码器" class="headerlink" title="1. 去噪自编码器"></a>1. 去噪自编码器</h4><p>在原始输入的基础上加入噪声，解码器被迫需要重构出不加噪声的原始输入x，从而使解码器学习到更加复杂的变换。</p>
+<h3><span id="欠完备自编码器">欠完备自编码器</span></h3><p>限定h比x的维度要小，得到数据中一些有用的特征。</p>
+<h3><span id="过完备的自编码器">过完备的自编码器</span></h3><p>取消上述的长度限制。假如不加任何限制，可能不会得到任何有用的信息，仅仅是将输入复制到输出。原因在于我们赋予f和g过于强大的功能，会直接将输入拷贝到输出，从而无法得到有价值的特征。所以需要加入正则化的约束。</p>
+<h4><span id="1-去噪自编码器">1. 去噪自编码器</span></h4><p>在原始输入的基础上加入噪声，解码器被迫需要重构出不加噪声的原始输入x，从而使解码器学习到更加复杂的变换。</p>
 <p>具体做法是，随即将x的一部分置为0，然后作为编码器的输入。</p>
-<h4 id="2-稀疏自编码器"><a href="#2-稀疏自编码器" class="headerlink" title="2. 稀疏自编码器"></a>2. 稀疏自编码器</h4><p>在损失函数上加入正则项。</p>
+<h4><span id="2-稀疏自编码器">2. 稀疏自编码器</span></h4><p>在损失函数上加入正则项。</p>
 <p>稀疏性解释：假设神经元的激活函数是sigmoid函数，如果当神经元的输出接近于1的时候我们认为它被激活，而输出接近于0的时候认为它被抑制，那么使得神经元大部分的时间都是被抑制的限制则被称作稀疏性限制。如果你使用tanh作为激活函数的话，当神经元输出为-1的时候，我们认为神经元是被抑制的。</p>
 <p>稀疏自编码器的目的就是通过限制模型的活跃度来约束模型的，尽可能使大多数神经元处于不活跃状态。</p>
 <p>加入稀疏正则项用于惩罚。ρ是超参数，表示期望的活跃度，通常是接近0的值。对偏离ρ较大的神经元进行惩罚。</p>
 <p>将下面的式子定义为sparse</p>
 <p><img src="/images/2021-10-27-09-18-29.png"></p>
 <p>则损失函数修正为：在原式的基础上+λ*sparse。λ是调节重构项和稀疏正则项的权重。</p>
-<h2 id="变分自编码器-VAE"><a href="#变分自编码器-VAE" class="headerlink" title="变分自编码器(VAE)"></a>变分自编码器(VAE)</h2><h1 id="Word2vec"><a href="#Word2vec" class="headerlink" title="Word2vec"></a>Word2vec</h1><p>使用独热向量编码、词袋模型等，会出现维度过高和稀疏性等问题。Word2vec模型将词嵌入一个向量空间中，用一个低维的向量来表达每一个词，语义相关的词距离更近。</p>
-<h2 id="Skip-gram"><a href="#Skip-gram" class="headerlink" title="Skip-gram"></a>Skip-gram</h2><p>给定一个中心词，去预测它的上下文。</p>
+<h2><span id="变分自编码器vae">变分自编码器(VAE)</span></h2><h1><span id="word2vec">Word2vec</span></h1><p>使用独热向量编码、词袋模型等，会出现维度过高和稀疏性等问题。Word2vec模型将词嵌入一个向量空间中，用一个低维的向量来表达每一个词，语义相关的词距离更近。</p>
+<h2><span id="skip-gram">Skip-gram</span></h2><p>给定一个中心词，去预测它的上下文。</p>
 <p>(x,y)中，x代表原始的输入，用独热向量表示，y是x的上下文，可以是一个词也可以是多个词。</p>
 <p>词向量的维度（与隐含层节点数一致）一般情况下要远远小于词语总数 V 的大小，所以 Word2vec 本质上是一种降维操作，把词语从 one-hot encoder 形式的表示降维到 Word2vec 形式的表示。</p>
 <p>y是一个词：<br><img src="/images/2021-10-28-12-42-36.png"></p>
 <p>y是多个词：<br><img src="/images/2021-10-28-12-38-57.png"></p>
-<h2 id="CBOW"><a href="#CBOW" class="headerlink" title="CBOW"></a>CBOW</h2><p>给定上下文，去预测中心词。是Skip-gram的相反过程。</p>
+<h2><span id="cbow">CBOW</span></h2><p>给定上下文，去预测中心词。是Skip-gram的相反过程。</p>
 
         </div>
         <footer class="article-footer">
@@ -245,7 +245,7 @@
 
 
 
-    <a data-url="http://example.com/2021/10/27/Representation-Learning/" data-id="ckwiln1md000auss490yxfiff" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://example.com/2021/10/27/Representation-Learning/" data-id="ckyds93f2000554s4adt35y70" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -327,7 +327,7 @@
 表示学习：采用模型自动学习数据的隐式特征，数据表示与后续任务往往是联合训练，不依赖专家经验，但需要较大的训练数据集。
 概率图模型马尔可夫模型受限玻尔兹曼机自编码器传统自编码器不是用标签进行监督，而是以输入数据作为参考，是一种无监督的学习模型，用于数据降维和特征提取。
 ",
-        "wordCount": 81
+        "wordCount": 34
     }
 </script>
 
@@ -443,6 +443,66 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2022/01/14/GRE-verbal-vocabulary/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2022/01/14/GRE-verbal-vocabulary/" class="title">GRE verbal vocabulary</a></p>
+                            <p class="item-date"><time datetime="2022-01-14T01:22:40.000Z" itemprop="datePublished">2022-01-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/12/05/ielts-2021-12-5/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/12/05/ielts-2021-12-5/" class="title">ielts-2021-12-5</a></p>
+                            <p class="item-date"><time datetime="2021-12-05T03:24:59.000Z" itemprop="datePublished">2021-12-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/12/01/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/12/01/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="title">内存管理</a></p>
+                            <p class="item-date"><time datetime="2021-12-01T12:10:18.000Z" itemprop="datePublished">2021-12-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2021/11/25/Speaking-part2/" class="thumbnail">
     
     
@@ -480,66 +540,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2021/11/20/ielts-2021-11-20/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2021/11/20/ielts-2021-11-20/" class="title">ielts-2021-11-20</a></p>
-                            <p class="item-date"><time datetime="2021-11-20T02:30:37.000Z" itemprop="datePublished">2021-11-20</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2021/11/15/speaking-material-1/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2021/11/15/speaking-material-1/" class="title">speaking material 1</a></p>
-                            <p class="item-date"><time datetime="2021-11-15T12:04:27.000Z" itemprop="datePublished">2021-11-15</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2021/11/14/ielts-2021-11-14/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2021/11/14/ielts-2021-11-14/" class="title">ielts-2021-11-14</a></p>
-                            <p class="item-date"><time datetime="2021-11-14T00:46:51.000Z" itemprop="datePublished">2021-11-14</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -552,7 +552,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">26</span></li></ul>
         </div>
     </div>
 
@@ -562,7 +562,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compilers-Principles/" rel="tag">Compilers Principles</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GNN/" rel="tag">GNN</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts/" rel="tag">ielts</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts-speaking/" rel="tag">ielts speaking</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/praise-God/" rel="tag">praise God</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts-JavaEE/" rel="tag">struts JavaEE</a><span class="tag-list-count">2</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compilers-Principles/" rel="tag">Compilers Principles</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GNN/" rel="tag">GNN</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GRE/" rel="tag">GRE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts/" rel="tag">ielts</a><span class="tag-list-count">25</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts-speaking/" rel="tag">ielts speaking</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts-writing/" rel="tag">ielts writing</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/os/" rel="tag">os</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/praise-God/" rel="tag">praise God</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts-JavaEE/" rel="tag">struts JavaEE</a><span class="tag-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -572,7 +572,7 @@
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Compilers-Principles/" style="font-size: 10px;">Compilers Principles</a> <a href="/tags/GNN/" style="font-size: 16.67px;">GNN</a> <a href="/tags/ielts/" style="font-size: 20px;">ielts</a> <a href="/tags/ielts-speaking/" style="font-size: 10px;">ielts speaking</a> <a href="/tags/praise-God/" style="font-size: 10px;">praise God</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts-JavaEE/" style="font-size: 13.33px;">struts JavaEE</a>
+            <a href="/tags/Compilers-Principles/" style="font-size: 10px;">Compilers Principles</a> <a href="/tags/GNN/" style="font-size: 15px;">GNN</a> <a href="/tags/GRE/" style="font-size: 10px;">GRE</a> <a href="/tags/ielts/" style="font-size: 20px;">ielts</a> <a href="/tags/ielts-speaking/" style="font-size: 12.5px;">ielts speaking</a> <a href="/tags/ielts-writing/" style="font-size: 17.5px;">ielts writing</a> <a href="/tags/os/" style="font-size: 10px;">os</a> <a href="/tags/praise-God/" style="font-size: 10px;">praise God</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts-JavaEE/" style="font-size: 12.5px;">struts JavaEE</a>
         </div>
     </div>
 
@@ -609,7 +609,7 @@
                 <h1 class="logo-wrap">
                     <a href="/" class="logo"></a>
                 </h1>
-                <p>&copy; 2021 John Doe</p>
+                <p>&copy; 2022 John Doe</p>
                 
                 <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
                 

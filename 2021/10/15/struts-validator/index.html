@@ -209,15 +209,15 @@
 
             
 
-            <h3 id="validate-方法"><a href="#validate-方法" class="headerlink" title="validate()方法"></a>validate()方法</h3><p>validate是父类ActionSupport的一个方法，需要重写实现它。<br>每个Action类执行时默认调用validate方法，检查输入的信息是否有误，若错误就要调用addFieldError，把提示信息传入。</p>
-<h3 id="validateXxx-方法"><a href="#validateXxx-方法" class="headerlink" title="validateXxx()方法"></a>validateXxx()方法</h3><p>一个Action类可以有多个validate，命名格式为：<strong>validate+ 业务方法名(首字母大写)</strong> <br><br>这样就可以自动匹配业务对应的处理逻辑</p>
+            <h3><span id="validate方法">validate()方法</span></h3><p>validate是父类ActionSupport的一个方法，需要重写实现它。<br>每个Action类执行时默认调用validate方法，检查输入的信息是否有误，若错误就要调用addFieldError，把提示信息传入。</p>
+<h3><span id="validatexxx方法">validateXxx()方法</span></h3><p>一个Action类可以有多个validate，命名格式为：<strong>validate+ 业务方法名(首字母大写)</strong> <br><br>这样就可以自动匹配业务对应的处理逻辑</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//UserAction的login业务的校验</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validateLogin</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    String account = loginUser.getAccount();</span><br><span class="line">    String pwd = loginUser.getPassword();</span><br><span class="line">    <span class="keyword">if</span> (account == <span class="keyword">null</span> || account.equals(<span class="string">&quot;&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.addFieldError(<span class="string">&quot;loginUser.account&quot;</span>,<span class="keyword">this</span>.getText(<span class="string">&quot;login.account.null&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (pwd == <span class="keyword">null</span> || pwd.equals(<span class="string">&quot;&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.addFieldError(<span class="string">&quot;loginUser.password&quot;</span>,<span class="keyword">this</span>.getText(<span class="string">&quot;login.password.null&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//UserAction处理login业务 </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        UserService userServ = <span class="keyword">new</span> UserService();</span><br><span class="line">        <span class="keyword">if</span> (userServ.login(loginUser))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>.addActionMessage(<span class="keyword">this</span>.getText(<span class="string">&quot;login.success&quot;</span>));</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.addActionError(<span class="keyword">this</span>.getText(<span class="string">&quot;login.error&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;fail&quot;</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//来自validate</span></span><br><span class="line">&lt;s:fielderror&gt;</span><br><span class="line">    &lt;s:param&gt;loginUser.account&lt;/s:param&gt;</span><br><span class="line">    &lt;s:param&gt;loginUser.password&lt;/s:param&gt;</span><br><span class="line">&lt;/s:fielderror&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//来自login</span></span><br><span class="line">&lt;s:actionerror&gt;&lt;/s:actionerror&gt;</span><br><span class="line"></span><br><span class="line">&lt;s:form action=<span class="string">&quot;login&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">    &lt;s:textfield name=<span class="string">&quot;loginUser.account&quot;</span> label=<span class="string">&quot;请输入用户名&quot;</span>&gt;&lt;/s:textfield&gt;</span><br><span class="line">    &lt;s:password name=<span class="string">&quot;loginUser.password&quot;</span> label=<span class="string">&quot;请输入密码&quot;</span>&gt;&lt;/s:password&gt;</span><br><span class="line">    &lt;s:submit value=<span class="string">&quot;登陆&quot;</span> method=<span class="string">&quot;login&quot;</span>&gt;&lt;/s:submit&gt;</span><br><span class="line">&lt;/s:form&gt;</span><br></pre></td></tr></table></figure>
 
-<h4 id="ActionError与FieldError的区别"><a href="#ActionError与FieldError的区别" class="headerlink" title="ActionError与FieldError的区别"></a>ActionError与FieldError的区别</h4><ul>
+<h4><span id="actionerror与fielderror的区别">ActionError与FieldError的区别</span></h4><ul>
 <li>addActionError (String anErrorMessage) 在Action类的login方法里使用，添加一个Action级别的错误消息到Action。<br>在jsp里，显示它的标签是&lt;s:actionerror/&gt;，显示全部的 Action级别的错误消息,可以加CSS代码。<br></li>
 <li>addFieldError (String  fieldName, String  errorMessage)往往在Action类里的validate里使用，因为是给一个字段(属性)添加错误消息。<br>在jsp里使用&lt;s:fielderror/&gt;显示错误信息。</li>
 </ul>
@@ -228,7 +228,7 @@
 
 
 
-    <a data-url="http://example.com/2021/10/15/struts-validator/" data-id="ckwiln1n8002cuss45nqp5e3m" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://example.com/2021/10/15/struts-validator/" data-id="ckyds93g8002k54s41ant0wyq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -308,7 +308,7 @@
         "url": "http://example.com/2021/10/15/struts-validator/",
         "description": "validate()方法validate是父类ActionSupport的一个方法，需要重写实现它。每个Action类执行时默认调用validate方法，检查输入的信息是否有误，若错误就要调用addFieldError，把提示信息传入。
 validateXxx()方法一个Action类可以有多个validate，命名格式为：validate+ 业务方法名(首字母大写) 这样就可以自动匹配业务对应的",
-        "wordCount": 358
+        "wordCount": 349
     }
 </script>
 
@@ -424,6 +424,66 @@ validateXxx()方法一个Action类可以有多个validate，命名格式为：va
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2022/01/14/GRE-verbal-vocabulary/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2022/01/14/GRE-verbal-vocabulary/" class="title">GRE verbal vocabulary</a></p>
+                            <p class="item-date"><time datetime="2022-01-14T01:22:40.000Z" itemprop="datePublished">2022-01-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/12/05/ielts-2021-12-5/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/12/05/ielts-2021-12-5/" class="title">ielts-2021-12-5</a></p>
+                            <p class="item-date"><time datetime="2021-12-05T03:24:59.000Z" itemprop="datePublished">2021-12-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2021/12/01/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2021/12/01/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="title">内存管理</a></p>
+                            <p class="item-date"><time datetime="2021-12-01T12:10:18.000Z" itemprop="datePublished">2021-12-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2021/11/25/Speaking-part2/" class="thumbnail">
     
     
@@ -461,66 +521,6 @@ validateXxx()方法一个Action类可以有多个validate，命名格式为：va
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2021/11/20/ielts-2021-11-20/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2021/11/20/ielts-2021-11-20/" class="title">ielts-2021-11-20</a></p>
-                            <p class="item-date"><time datetime="2021-11-20T02:30:37.000Z" itemprop="datePublished">2021-11-20</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2021/11/15/speaking-material-1/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2021/11/15/speaking-material-1/" class="title">speaking material 1</a></p>
-                            <p class="item-date"><time datetime="2021-11-15T12:04:27.000Z" itemprop="datePublished">2021-11-15</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2021/11/14/ielts-2021-11-14/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2021/11/14/ielts-2021-11-14/" class="title">ielts-2021-11-14</a></p>
-                            <p class="item-date"><time datetime="2021-11-14T00:46:51.000Z" itemprop="datePublished">2021-11-14</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -533,7 +533,7 @@ validateXxx()方法一个Action类可以有多个validate，命名格式为：va
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">26</span></li></ul>
         </div>
     </div>
 
@@ -543,7 +543,7 @@ validateXxx()方法一个Action类可以有多个validate，命名格式为：va
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compilers-Principles/" rel="tag">Compilers Principles</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GNN/" rel="tag">GNN</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts/" rel="tag">ielts</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts-speaking/" rel="tag">ielts speaking</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/praise-God/" rel="tag">praise God</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts-JavaEE/" rel="tag">struts JavaEE</a><span class="tag-list-count">2</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compilers-Principles/" rel="tag">Compilers Principles</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GNN/" rel="tag">GNN</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GRE/" rel="tag">GRE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts/" rel="tag">ielts</a><span class="tag-list-count">25</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts-speaking/" rel="tag">ielts speaking</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ielts-writing/" rel="tag">ielts writing</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/os/" rel="tag">os</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/praise-God/" rel="tag">praise God</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts-JavaEE/" rel="tag">struts JavaEE</a><span class="tag-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -553,7 +553,7 @@ validateXxx()方法一个Action类可以有多个validate，命名格式为：va
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Compilers-Principles/" style="font-size: 10px;">Compilers Principles</a> <a href="/tags/GNN/" style="font-size: 16.67px;">GNN</a> <a href="/tags/ielts/" style="font-size: 20px;">ielts</a> <a href="/tags/ielts-speaking/" style="font-size: 10px;">ielts speaking</a> <a href="/tags/praise-God/" style="font-size: 10px;">praise God</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts-JavaEE/" style="font-size: 13.33px;">struts JavaEE</a>
+            <a href="/tags/Compilers-Principles/" style="font-size: 10px;">Compilers Principles</a> <a href="/tags/GNN/" style="font-size: 15px;">GNN</a> <a href="/tags/GRE/" style="font-size: 10px;">GRE</a> <a href="/tags/ielts/" style="font-size: 20px;">ielts</a> <a href="/tags/ielts-speaking/" style="font-size: 12.5px;">ielts speaking</a> <a href="/tags/ielts-writing/" style="font-size: 17.5px;">ielts writing</a> <a href="/tags/os/" style="font-size: 10px;">os</a> <a href="/tags/praise-God/" style="font-size: 10px;">praise God</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts-JavaEE/" style="font-size: 12.5px;">struts JavaEE</a>
         </div>
     </div>
 
@@ -590,7 +590,7 @@ validateXxx()方法一个Action类可以有多个validate，命名格式为：va
                 <h1 class="logo-wrap">
                     <a href="/" class="logo"></a>
                 </h1>
-                <p>&copy; 2021 John Doe</p>
+                <p>&copy; 2022 John Doe</p>
                 
                 <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
                 
